@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+numpy = "*"
+pypdf2 = "*"
+pdfplumber = "*"
+requests = "*"
+beautifulsoup4 = "*"
+matplotlib = "*"
+seaborn = "*"
+plotly = "*"
+flask = "*"
+jinja2 = "*"
+cerberus = "*"
+jsonschema = "*"
+scikit-learn = "*"
+pypdf = "*"
+
+[dev-packages]
+pytest = "*"
+black = "*"
+flake8 = "*"
+mypy = "*"
+
+[requires]
+python_version = "3.12"

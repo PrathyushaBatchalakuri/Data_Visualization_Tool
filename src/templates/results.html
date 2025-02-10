@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Visualizations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .visualization-container {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .description {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generated Visualizations</h1>
+
+    <!-- Visualization 1: Clustering -->
+    <div class="visualization-container">
+        <h2>Visualization 1: Clustering</h2>
+        <div>{{ clustering_graph | safe }}</div>
+        <p class="description">
+            This scatter plot shows clusters of incidents based on their nature and location. The clusters help identify groups of incidents with similar characteristics and patterns, providing insights into commonalities in the data.
+        </p>
+    </div>
+
+    <!-- Visualization 2: Bar Graph -->
+    <div class="visualization-container">
+        <h2>Visualization 2: Bar Graph</h2>
+        <div>{{ bar_graph | safe }}</div>
+        <p class="description">
+            The bar graph compares the frequency of different incident types across the dataset. It highlights the most and least common incident types, offering a clear perspective on their prevalence.
+        </p>
+    </div>
+
+    <!-- Visualization 3: Heatmap -->
+    <div class="visualization-container">
+        <h2>Visualization 3: Heatmap</h2>
+        <div>{{ heatmap | safe }}</div>
+        <p class="description">
+            This heatmap visualizes the intensity of incidents based on their nature and location. Darker colors represent higher concentrations of incidents, making it easier to identify hotspots or areas with frequent occurrences.
+        </p>
+    </div>
+</body>
+</html>

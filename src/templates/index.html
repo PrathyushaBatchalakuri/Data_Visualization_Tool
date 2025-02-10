@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 3</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .btn-add-file, .btn-remove-file, .btn-clear-urls {
+            margin-top: 10px;
+        }
+        .warning {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .d-none {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Upload Incident PDFs</h1>
+        <form id="upload-form" method="POST" enctype="multipart/form-data">
+            <!-- Input for PDF URLs -->
+            <div class="form-group">
+                <label for="pdf-urls" class="form-label">Enter PDF URLs (comma-separated):</label>
+                <textarea id="pdf-urls" name="pdf_urls" class="form-control" rows="3" placeholder="https://example.com/file1.pdf, https://example.com/file2.pdf"></textarea>
+                <button type="button" id="clear-urls" class="btn btn-warning mt-2">Clear URLs</button>
+                <p id="url-warning" class="warning d-none">Please remove file uploads to use URLs.</p>
+            </div>
+
+            <!-- Dynamic file uploads -->
+            <div class="form-group">
+                <label for="file-container" class="form-label">Or upload one or more PDF files:</label>
+                <div id="file-container"></div>
+                <button type="button" id="add-file-btn" class="btn btn-outline-primary mt-2">Add File</button>
+                <p id="file-warning" class="warning d-none">Please clear URLs to upload files.</p>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-success btn-block">Generate Visualizations</button>
+        </form>
+    </div>
+
+    <script>
+        const pdfUrlsInput = document.getElementById('pdf-urls');
+        const clearUrlsBtn = document.getElementById('clear-urls');
+        const fileContainer = document.getElementById('file-container');
+        const addFileBtn = document.getElementById('add-file-btn');
+        const urlWarning = document.getElementById('url-warning');
+        const fileWarning = document.getElementById('file-warning');
+
+        // Reset warnings
+        function resetWarnings() {
+            urlWarning.classList.add('d-none');
+            fileWarning.classList.add('d-none');
+        }
+
+        // Validate inputs dynamically
+        function validateInputs() {
+            const hasUrls = pdfUrlsInput.value.trim().length > 0;
+            const hasFiles = [...fileContainer.querySelectorAll('.file-input')].some(input => input.value);
+
+            toggleFileInputs(!hasUrls); // Disable file inputs if URLs exist
+            toggleUrlInput(!hasFiles); // Disable URL input if files exist
+
+            urlWarning.classList.toggle('d-none', !hasFiles || !hasUrls);
+            fileWarning.classList.toggle('d-none', !hasFiles || !hasUrls);
+        }
+
+        // Toggle file inputs
+        function toggleFileInputs(enable) {
+            const fileInputs = fileContainer.querySelectorAll('.file-input');
+            fileInputs.forEach(input => input.disabled = !enable);
+            addFileBtn.disabled = !enable; // Disable add button if file inputs are disabled
+        }
+
+        // Toggle URL input
+        function toggleUrlInput(enable) {
+            pdfUrlsInput.disabled = !enable;
+            clearUrlsBtn.disabled = !enable;
+        }
+
+        // Add file input dynamically
+        addFileBtn.addEventListener('click', () => {
+            const fileInputGroup = document.createElement('div');
+            fileInputGroup.classList.add('d-flex', 'align-items-center', 'mb-2', 'file-input-row');
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'pdf_files';
+            fileInput.classList.add('form-control', 'file-input');
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'ms-2', 'btn-remove-file');
+            removeBtn.textContent = 'Remove';
+
+            fileInputGroup.appendChild(fileInput);
+            fileInputGroup.appendChild(removeBtn);
+            fileContainer.appendChild(fileInputGroup);
+
+            // Remove file input
+            removeBtn.addEventListener('click', () => {
+                fileInputGroup.remove();
+                resetWarnings(); // Clear warnings if files are removed
+                validateInputs(); // Revalidate inputs
+            });
+
+            validateInputs(); // Revalidate after adding file
+        });
+
+        // Clear URLs
+        clearUrlsBtn.addEventListener('click', () => {
+            pdfUrlsInput.value = '';
+            resetWarnings(); // Clear warnings when URLs are cleared
+            validateInputs(); // Revalidate inputs
+        });
+
+        // Input validation events
+        pdfUrlsInput.addEventListener('input', validateInputs);
+        fileContainer.addEventListener('change', validateInputs);
+
+        // Initialize
+        resetWarnings();
+    </script>
+</body>
+</html>
